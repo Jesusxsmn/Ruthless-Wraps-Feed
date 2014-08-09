@@ -1,0 +1,32 @@
+<h1>Instagram</h1>
+
+<ul id="instagram-feed"></ul>
+
+<script type="text/x-template" id="insta-tmpl">
+{{#each data}}
+<li>
+	<img src="{{images.low_resolution.url}}">
+</li>
+{{/each}}
+</script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
+
+<script>
+(function ($) {
+	var instagramEndpoint = "https://api.instagram.com/v1/users/310975131/media/recent?client_id=a4c2cb3d330941d199ecdcdb186d75bb"
+	$.ajax({
+		type: "GET",
+		url: instagramEndpoint,
+		dataType: "jsonp"
+	}).done(function (data) {
+		if (typeof data === "string") data = JSON.parse(data);
+
+		console.log(data);
+		var tmpl = Handlebars.compile($("#insta-tmpl").html());
+
+		$("#instagram-feed").html(tmpl(data));
+	});
+})(jQuery);
+</script>
